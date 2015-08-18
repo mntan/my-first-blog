@@ -8,12 +8,34 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="{% static "css/blog.css" %}">
+          
     </head>
     <body>
+        <script>        
+            window.alert("hello"+message ""+"\n");                
+            {% for message in messages %}
+                // window.alert("hello"+message ""+"\n");                
+            {% endfor %}        
+        </script>   
         <div class="page-header">
             <a href="{% url "blog.views.post_new" %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
             <h1><a href="/">Django Girls Blog</a></h1>
         </div>
+
+        {% if messages %}
+
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+    <script type="text/javascript">
+        // window.alert("message")
+    </script>
+    
+
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
         <div class="content container">
             <div class="row">
                 <div class="col-md-8">
@@ -22,5 +44,10 @@
                 </div>
             </div>
         </div>
+    {% block js %}
+
+    {% endblock %}
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+     <script type="text/javascript" src="{% static "js/upload.js" %}"></script>
     </body>
 </html>
