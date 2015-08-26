@@ -6,15 +6,15 @@ from django.utils import timezone
 from .models import Post
 from .forms import PostForm
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
 
-
+@csrf_exempt
 def post_list(request):        
     #posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     # messages.add_message(request, messages.INFO, 'Hello world.')
     # messages.info(request, 'Three credits remain in your account.')
-    # posts = Post.objects.all()
-    # return render(request,'blog/post_list.html', {'posts':posts})   
-    return HttpResponse(request.META)
+    posts = Post.objects.all()
+    return render(request,'blog/post_list.html', {'posts':posts, 'request':request})   
 
 def post_detail(request,pk): 	
 	#post = get_object_or_404(Post, pk=pk)
