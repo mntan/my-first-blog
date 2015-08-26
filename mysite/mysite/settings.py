@@ -39,7 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'blog',
     'polls',
-    
+    's3sync', 
+    'redis_cache',   
 )
 
 MIDDLEWARE_CLASSES = (
@@ -90,6 +91,24 @@ DATABASES = {
         # 'PORT': '3306',
     }
 }
+CACHES = {
+    'default': {
+        'BACKEND':'redis_cache.RedisCache',
+        'LOCATION':'http://127.0.0.1:6379/',
+        'TIMEOUT':3600*24*30,
+        'OPTIONS':{
+            'DB':2,
+        }
+    },
+    's3-storage' : {
+        'BACKEND':'redis_cache.RedisCache',
+        'LOCATION':'http://127.0.0.1:6379/',
+        'TIMEOUT':3600*24*30,
+        'OPTIONS':{
+            'DB':2,
+        }
+    }
+}
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.auth',
@@ -121,3 +140,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 #AUTH_USER_MODEL = 'myauth.User'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 's3sync.storage.S3PendingStorage'
+
+AWS_ACCESS_KEY_ID = 'AKIAJLBBQSEW4QQ45UVA'
+AWS_SECRET_ACCESS_KEY = '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'
+BUCKET_UPLOADS = 'coolertesttest'
+BUCKET_UPLOADS_URL = '//coolertesttest.s3-website-ap-southeast-1.amazonaws.com/'
+BUCKET_ASSETS_PREFIX = 'media'
+BUCKET_UPLOADS_PREFIX = 'media/uploads'
+BUCKET_UPLOADS_PATH = MEDIA_ROOT + '/profile'
+BUCKET_UPLOADS_CACHE_ALIAS = 's3-storage'
+BUCKET_UPLOADS_PENDING_KEY = 's3-pending'
+BUCKET_UPLOADS_PENDING_DELETE_KEY = 's3-pending-delete'
+# For your production site, link to the S3 uploads bucket.
+# This setting is optional for development.
+PRODUCTION = True
